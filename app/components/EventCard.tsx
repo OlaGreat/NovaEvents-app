@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatEventDate, calculateFundingProgress } from "../lib/eventFormatting";
 
 interface EventCardProps {
   id: number;
@@ -31,16 +32,8 @@ export default function EventCard({
   tierCount,
   status,
 }: EventCardProps) {
-  const date = new Date(dateUnix * 1000).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  const progress = Math.min(
-    100,
-    Math.round((Number(balance) / Number(fundingGoal)) * 100)
-  );
+  const date = formatEventDate(dateUnix);
+  const progress = calculateFundingProgress(balance, fundingGoal);
 
   return (
     <Link href={`/events/${id}`}>
